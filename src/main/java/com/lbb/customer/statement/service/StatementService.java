@@ -4,6 +4,7 @@ import com.lbb.customer.statement.db.service.ListAccountService;
 import com.lbb.customer.statement.http.StatementClient;
 import com.lbb.customer.statement.http.termdeposit.TermDepositInqueryReq;
 import com.lbb.customer.statement.http.termdeposit.TermDepositInqueryRes;
+import com.lbb.customer.statement.model.CalulatorObject;
 import com.lbb.customer.statement.model.StatementReq;
 import com.lbb.customer.statement.model.StatementRes;
 import com.lbb.customer.statement.http.checkBalance.GetBalanceReq;
@@ -20,6 +21,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +36,13 @@ public class StatementService {
     @Autowired
     ListAccountService listAccountService;
 
+    @Autowired
+       TDInterestCalculator calculator;
     @Value("${external.api.core-banking.url}")
     private String baseUrl;
+
+
+
     public StatementRes getStatement (StatementReq req){
 
         StatementRes result = new StatementRes();
@@ -93,10 +101,14 @@ public class StatementService {
 
                 ListAccountData accTD = new ListAccountData();
                 AccountTDDetail  accDetail = getAccTDDetail(ListData.get(i).getAccount_number());
+                CalulatorObject Objcalulator = new CalulatorObject();
+                LocalDate startDate = OffsetDateTime.parse(accDetail.getStart_date()).toLocalDate();
+                Objcalulator = calculator.calculateTDInterestService(accDetail.getAmount(),accDetail.getInterest(),accDetail.getDep_term_period(),startDate);
+
             accTD.setStatus(ListData.get(i).getStatus());
-            accTD.setProfit(ListData.get(i).getProfit());
+            accTD.setProfit(Objcalulator.getInterestAmount());
             accTD.setInterest(accDetail.getInterest());
-            accTD.setBalance(ListData.get(i).getBalance());
+            accTD.setBalance(accDetail.getAmount());
             accTD.setCurrency(ListData.get(i).getCurrency());
             accTD.setAccount_type(ListData.get(i).getAccount_type());
             accTD.setAccount_name(ListData.get(i).getAccount_name());
@@ -120,10 +132,14 @@ public class StatementService {
         req.setAccount(acc);
 
         data = getAccountDetail(req);
+
+
         result.setInterest(data.getDetails().getIntDetailRec().getCrAcctLevelIntRate());
         result.setStart_date(data.getDetails().getOrigAcctOpenDate());
         result.setEnd_date(data.getDetails().getIntDetailRec().getCrNextCycleDate());
         result.setDep_term_period(data.getDetails().getTdaRec().getDepTermPeriod());
+        result.setAmount(data.getDetails().getTdaRec().getPrincipalAmt());
+
         return  result;
     }
 

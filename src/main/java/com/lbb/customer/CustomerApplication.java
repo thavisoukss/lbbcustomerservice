@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.lbb.customer.statement.db.repository")
 @EntityScan(basePackages = "com.lbb.customer.statement.db.entity")
@@ -16,6 +19,13 @@ public class CustomerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CustomerApplication.class, args);
 		System.out.println("********* Customer Service Start *********");
+
+		LocalDate start = LocalDate.of(2025, 1, 1);
+		LocalDate end = LocalDate.of(2025, 2, 1);
+
+		long days = ChronoUnit.DAYS.between(start, end);
+
+		System.out.println(days);
 	}
 
 }

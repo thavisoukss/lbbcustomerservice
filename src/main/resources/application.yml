@@ -1,10 +1,14 @@
 spring:
+  main:
+    lazy-initialization: true
   profiles:
     active: uat # ປ່ຽນເປັນ prod ເມື່ອຈະຂຶ້ນລະບົບຈິງ
 
 # ການຕັ້ງຄ່າລວມທີ່ໃຊ້ຄືກັນທັງໝົດ
 logging:
-  config: classpath:log4j2.xml
+#  config: classpath:log4j2.xml
+  level:
+    'com.zaxxer.hikari': debug
 
 management:
   tracing:

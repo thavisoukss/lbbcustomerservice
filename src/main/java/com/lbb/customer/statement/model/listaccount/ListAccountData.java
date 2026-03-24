@@ -18,7 +18,7 @@ public class ListAccountData {
     private String end_date;
     private int dep_term_period;
     private BigDecimal interest;
-    private double profit;
+    private BigDecimal profit;
     private String created_at;
     private String status;
 
