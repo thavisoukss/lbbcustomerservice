@@ -1,7 +1,6 @@
 
 server:
   port: 8081
-
 baseurl: /api/customers
 spring:
   datasource:
@@ -9,8 +8,6 @@ spring:
     username: mb_uat
     password: qwertyui
     driver-class-name: oracle.jdbc.OracleDriver
-
-
   jpa:
     show-sql: true
     properties:
@@ -22,7 +19,7 @@ external:
       connect-timeout: 5000
       read-timeout: 10000
     core-banking:
-      url: http://localhost:8082/api/corebanking
+      url: ${COREBANKING_SERVICE_URL:http://corebanking-service:8082/api/corebanking}
 # ການຕັ້ງຄ່າ Log4j2
 logging:
   config: classpath:log4j2.xml

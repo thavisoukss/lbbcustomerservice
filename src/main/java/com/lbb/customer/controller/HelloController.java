@@ -13,6 +13,7 @@ public class HelloController {
     @GetMapping("/testtoken")
     public String testtoken(Authentication authentication) {
 
+        System.out.println(authentication.getName());
         return "testtoken " + authentication.getName();
     }
 

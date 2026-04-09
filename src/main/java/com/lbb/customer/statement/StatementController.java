@@ -42,13 +42,9 @@ public class StatementController {
         req.setLimit(limit);
         req.setOffset(offset);
 
-
         decodeToken.decodeToken(authentication);
-
-
         return statementService.getStatement(req);
     }
-
 
     @GetMapping(value = "/list-td-account",
             produces = "application/json", // This tells the client we return JSON
@@ -65,7 +61,5 @@ public class StatementController {
 
         return statementService.getTDAccount(decodeTokenObject ,req.getPhone() );
     }
-
-
 
 }
