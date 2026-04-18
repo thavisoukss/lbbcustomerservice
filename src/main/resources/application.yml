@@ -2,7 +2,7 @@ spring:
   main:
     lazy-initialization: true
   profiles:
-    active: dev # ປ່ຽນເປັນ prod ເມື່ອຈະຂຶ້ນລະບົບຈິງ
+    active: local # ປ່ຽນເປັນ prod ເມື່ອຈະຂຶ້ນລະບົບຈິງ
 
 # ການຕັ້ງຄ່າລວມທີ່ໃຊ້ຄືກັນທັງໝົດ
 logging:
