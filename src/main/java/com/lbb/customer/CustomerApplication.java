@@ -6,14 +6,14 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.lbb.customer.statement.db.repository")
-@EntityScan(basePackages = "com.lbb.customer.statement.db.entity")
+@ConfigurationPropertiesScan
 public class CustomerApplication {
 
 	public static void main(String[] args) {

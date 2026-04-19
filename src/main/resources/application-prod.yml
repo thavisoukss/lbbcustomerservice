@@ -4,10 +4,17 @@ server:
 baseurl: /api/customers
 spring:
   datasource:
-    url: jdbc:oracle:thin:@//172.16.4.79:1521/cdbmbuat.lbb.local
-    username: mb_uat
-    password: qwertyui
-    driver-class-name: oracle.jdbc.OracleDriver
+    db1:
+      url: jdbc:oracle:thin:@//172.16.4.79:1521/cdbmbuat.lbb.local
+      username: mb_uat
+      password: qwertyui
+      driver-class-name: oracle.jdbc.OracleDriver
+
+    db2:
+      url: jdbc:oracle:thin:@//172.16.4.79:1521/LBBMBUAT02.lbb.local
+      username: admin_mbuat
+      password: Admin123##
+      driver-class-name: oracle.jdbc.OracleDriver
 
   jpa:
     show-sql: true
