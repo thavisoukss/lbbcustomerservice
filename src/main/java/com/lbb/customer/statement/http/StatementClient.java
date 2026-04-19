@@ -15,8 +15,6 @@ public class StatementClient {
     public StatementClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
-
-
     public <T, R> R getStatement(String url, T requestBody, HttpHeaders headers , Class<R> responseType ) {
         logger.info("Calling  Gateway CoreBanking  API: URL={}", url);
 

@@ -17,9 +17,9 @@ public class HelloController {
         return "testtoken " + authentication.getName();
     }
 
-    @GetMapping("/test")
-    public String test() {
-
-        return  "hello customer servcie";
-    }
+//    @GetMapping("/test")
+//    public String test() {
+//
+//        return  "hello customer servcie";
+//    }
 }

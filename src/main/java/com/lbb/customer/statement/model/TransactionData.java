@@ -120,7 +120,7 @@ public class TransactionData {
     private String endDt;
     private Long revTranSeqNo;
     private Long revContraTranSeqNo;
-    private String tranHistFcyRec;
+    private TranHistFcyRec tranHistFcyRec;
     private String cPartyRec;
     private String tranHistIbftRec;
     private Integer version;

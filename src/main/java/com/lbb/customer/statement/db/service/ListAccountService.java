@@ -8,5 +8,6 @@ import java.util.List;
 @Service
 public interface ListAccountService {
     List<ListAccountData> getListTDAccount(String userId);
+    List<ListAccountData> getListCurrentAccount(String userId);
 
 }

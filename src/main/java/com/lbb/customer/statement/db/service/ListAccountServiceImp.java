@@ -25,5 +25,12 @@ public class ListAccountServiceImp implements ListAccountService {
         return listAccountMapper.toAccResponseList(entities);
     }
 
+    @Override
+    public List<ListAccountData> getListCurrentAccount(String userId) {
+
+        List<ListAccountEntity> entities = listAccountRepository.getListCurrAccount(userId);
+        return listAccountMapper.toAccResponseList(entities);
+    }
+
 
 }

@@ -48,7 +48,7 @@ public class Details {
     private String oldProductCode;
     private IntDetailRec intDetailRec;
     List<JointAcctList> JointAcctList;
-    private String acctStmtRec;
+    private AcctStmtRec acctStmtRec;
     private TdaRec tdaRec;
     ProdScDefRec prodScDefRec;
     List<ProdScIndividualList> prodScIndividualList;
