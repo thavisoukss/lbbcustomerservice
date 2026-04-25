@@ -1,5 +1,7 @@
 package com.lbb.customer.config;
 
+import com.lbb.customer.buygold.db.repository.ProductRepository;
+import com.lbb.customer.createaccount.db.repository.TdRepository;
 import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
@@ -19,7 +21,10 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.lbb.customer.buygold.db.repository",
+        basePackageClasses = {
+                TdRepository.class,
+                ProductRepository.class
+        },
         entityManagerFactoryRef = "db2EntityManagerFactory",
         transactionManagerRef = "db2TransactionManager"
 )
@@ -44,7 +49,7 @@ public class Db2Config {
 
         return builder
                 .dataSource(db2DataSource())
-                .packages("com.lbb.customer.buygold.db.entity")
+                .packages("com.lbb.customer.buygold.db.entity","com.lbb.customer.createaccount.db.entity")
                 .persistenceUnit("db2")
                 .properties(Map.of(
                         "hibernate.dialect", "org.hibernate.dialect.OracleDialect"

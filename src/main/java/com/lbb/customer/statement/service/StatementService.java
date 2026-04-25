@@ -1,5 +1,8 @@
 package com.lbb.customer.statement.service;
 
+import com.lbb.customer.buygold.http.exchangerate.ExchangeRateReq;
+import com.lbb.customer.buygold.http.exchangerate.ExchangeRateRes;
+import com.lbb.customer.buygold.service.ListProductService;
 import com.lbb.customer.statement.db.service.ListAccountService;
 import com.lbb.customer.statement.http.StatementClient;
 import com.lbb.customer.statement.http.listtxn.Credit;
@@ -8,15 +11,13 @@ import com.lbb.customer.statement.http.listtxn.TxnData;
 import com.lbb.customer.statement.http.listtxn.TransactionResponse;
 import com.lbb.customer.statement.http.termdeposit.TermDepositInqueryReq;
 import com.lbb.customer.statement.http.termdeposit.TermDepositInqueryRes;
-import com.lbb.customer.statement.model.CalulatorObject;
-import com.lbb.customer.statement.model.StatementReq;
-import com.lbb.customer.statement.model.StatementRes;
+import com.lbb.customer.statement.model.*;
 import com.lbb.customer.statement.http.checkBalance.GetBalanceReq;
 import com.lbb.customer.statement.http.checkBalance.GetBalanceRes;
-import com.lbb.customer.statement.model.TransactionData;
 import com.lbb.customer.statement.model.listaccount.AccountTDDetail;
 import com.lbb.customer.statement.model.listaccount.ListAccountData;
 import com.lbb.customer.statement.model.listaccount.ListAccountRes;
+import com.lbb.customer.statement.model.listaccount.StoreAccountTd;
 import com.lbb.customer.util.ConvertTxnType;
 import com.lbb.customer.util.DecodeTokenObject;
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +28,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -46,6 +49,9 @@ public class StatementService {
        TDInterestCalculator calculator;
     @Autowired
     ConvertTxnType convertTxnType;
+
+    @Autowired
+    ListProductService listProductService;
 
     @Value("${external.api.core-banking.url}")
     private String baseUrl;
@@ -76,8 +82,6 @@ public class StatementService {
         account = getAccountByCcy(ListData , method);
         logger.info(account);
 
-        TransactionResponse aa = new TransactionResponse();
-        aa = convertStatementCurrentAcc(account , size);
 
         return  convertStatementCurrentAcc(account , size);
     }
@@ -150,10 +154,6 @@ public class StatementService {
         }
         return result;
     }
-
-
-
-
 
 
     public GetBalanceRes getBalance (GetBalanceReq req){
@@ -239,35 +239,47 @@ public class StatementService {
         List<ListAccountData> data = new ArrayList<>();
         List<ListAccountData> ListData = listAccountService.getListCurrentAccount(token.getUserId());
         logger.info(ListData);
-
-//        if(ListData != null && !ListData.isEmpty()){
-//            for (int i = 0; i < ListData.size(); i++) {
-//
-//                ListAccountData accTD = new ListAccountData();
-//                AccountTDDetail  accDetail = getAccTDDetail(ListData.get(i).getAccount_number());
-//                CalulatorObject Objcalulator = new CalulatorObject();
-//                LocalDate startDate = OffsetDateTime.parse(accDetail.getStart_date()).toLocalDate();
-//                Objcalulator = calculator.calculateTDInterestService(accDetail.getAmount(),accDetail.getInterest(),accDetail.getDep_term_period(),startDate);
-//
-//                accTD.setStatus(ListData.get(i).getStatus());
-//                accTD.setProfit(Objcalulator.getInterestAmount());
-//                accTD.setInterest(accDetail.getInterest());
-//                accTD.setBalance(accDetail.getAmount());
-//                accTD.setCurrency(ListData.get(i).getCurrency());
-//                accTD.setAccount_type(ListData.get(i).getAccount_type());
-//                accTD.setAccount_name(ListData.get(i).getAccount_name());
-//                accTD.setDep_term_period(accDetail.getDep_term_period());
-//                accTD.setCreated_at(ListData.get(i).getCreated_at());
-//                accTD.setStart_date(accDetail.getStart_date());
-//                accTD.setEnd_date(accDetail.getEnd_date());
-//                accTD.setAccount_number(ListData.get(i).getAccount_number());
-//                accTD.setAccount_type("CurrentAccount");
-//                data.add(accTD);
-//            }
-//        }
         return data;
     }
 
+    public PortfolioRes getPortfolio(String userId){
+
+        logger.info("******** get current account by user id *********** ");
+
+        List<ListAccountData> ListData = listAccountService.getListCurrentAccount(userId);
+        ListAccountData account = new ListAccountData();
+        logger.info(ListData);
+        logger.info("******* get account number by ccy =  " + "LBI" + " ***********");
+        account = getAccountByCcy(ListData , "LBI");
+        logger.info(account);
+
+        logger.info("******* get Rate  ***********");
+
+        ExchangeRateRes rate = new ExchangeRateRes();
+        ExchangeRateReq rateReq = new ExchangeRateReq();
+        rateReq.setBranch("100");
+        rateReq.setCcy("LBI");
+        rateReq.setHistoryYn(false);
+        rateReq.setXrateType("CSG");
+        rate = listProductService.getRate(rateReq);
+
+        logger.info("******* get Balance   ***********");
+        GetBalanceRes balance = new GetBalanceRes();
+        GetBalanceReq balanceReq = new GetBalanceReq();
+        balanceReq.setAccount(account.getAccount_number());
+        balance = getBalance(balanceReq);
+
+        PortfolioRes result = new PortfolioRes();
+        PortfolioData data = new PortfolioData();
+        data.setCurrency("LAK");
+        data.setInitial_total_amount(balance.getDetails().getAvailBal()
+                .multiply(BigDecimal.valueOf(rate.getData().getMidRate()))
+                .setScale(2, RoundingMode.HALF_UP));
+        data.setCurrent_total_amount(balance.getDetails().getAvailBal());
+        result.setData(data);
+        result.setStatus("success");
+        return result;
+    }
 
     public AccountTDDetail getAccTDDetail (String acc){
 
@@ -287,6 +299,13 @@ public class StatementService {
 
         return  result;
     }
+
+    public String StoreAccountTD (StoreAccountTd req){
+
+        return listAccountService.StoreAccountTD(req);
+    }
+
+
 
 
 

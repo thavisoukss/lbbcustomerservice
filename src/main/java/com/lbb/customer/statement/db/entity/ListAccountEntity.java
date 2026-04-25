@@ -1,12 +1,10 @@
 package com.lbb.customer.statement.db.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -14,7 +12,8 @@ import java.math.BigDecimal;
 public class ListAccountEntity {
 
     @Id
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+            @Column(name = "ID")
     private Long id;
 
     @Column(name = "CUSTOMER_ID")
@@ -23,8 +22,8 @@ public class ListAccountEntity {
     @Column(name = "ACCOUNT_NO", length = 50)
     private String accountNo;
 
-    @Column(name = "ACCOUNT_NAME", length = 255)
-    private String accountName;
+    @Column(name = "ACCOUNT_NAME")
+    private String accName;
 
     @Column(name = "ACCOUNT_TYPE", length = 50)
     private String accountType;
@@ -39,13 +38,13 @@ public class ListAccountEntity {
     private String status;
 
     @Column(name = "CREATED_AT")
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     @Column(name = "UPDATED_AT")
-    private String updatedAt;
+    private LocalDateTime updatedAt;
 
     @Column(name = "DELETE_AT")
-    private String deleteAt;
+    private LocalDateTime deleteAt;
 
     @Column(name = "BALANCE")
     private BigDecimal balance;

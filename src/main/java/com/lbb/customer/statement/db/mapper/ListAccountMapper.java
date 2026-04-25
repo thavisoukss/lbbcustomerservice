@@ -18,11 +18,11 @@ public class ListAccountMapper {
         ListAccountData data = new ListAccountData();
         data.setTransaction_id("");
         data.setAccount_number(entity.getAccountNo());
-        data.setAccount_name(entity.getAccountName());
+        data.setAccount_name(entity.getAccName());
         data.setAccount_type(entity.getAccountType());
         data.setBalance(entity.getBalance());
         data.setCurrency(entity.getAccountCurrency());
-        data.setCreated_at(entity.getCreatedAt());
+        data.setCreated_at(String.valueOf(entity.getCreatedAt()));
         data.setStatus(entity.getStatus());
         return data;
     }

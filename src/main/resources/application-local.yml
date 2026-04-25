@@ -9,7 +9,6 @@ spring:
       username: mb_uat
       password: qwertyui
       driver-class-name: oracle.jdbc.OracleDriver
-
     db2:
       url: jdbc:oracle:thin:@//172.16.4.79:1521/LBBMBUAT02.lbb.local
       username: admin_mbuat

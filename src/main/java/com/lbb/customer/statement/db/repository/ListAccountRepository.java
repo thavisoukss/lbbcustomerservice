@@ -21,5 +21,7 @@ public interface ListAccountRepository extends JpaRepository<ListAccountEntity, 
             " WHERE STATUS ='ACTIVE'  AND DESCRIPTION ='Current Account' AND CUSTOMER_ID = :userId " , nativeQuery = true)
     List<ListAccountEntity> getListCurrAccount(@Param("userId") String userId);
 
+    
+
 
 }

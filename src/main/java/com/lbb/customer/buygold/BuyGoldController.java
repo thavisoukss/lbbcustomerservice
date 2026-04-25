@@ -4,11 +4,9 @@ import com.lbb.customer.buygold.model.FeeReq;
 import com.lbb.customer.buygold.model.FeeRes;
 import com.lbb.customer.buygold.model.GetProductRes;
 import com.lbb.customer.buygold.service.ListProductService;
-import com.lbb.customer.statement.model.StatementReq;
-import com.lbb.customer.statement.model.StatementRes;
-import com.lbb.customer.statement.service.StatementService;
 
 import com.lbb.customer.util.DecodeToken;
+import com.lbb.customer.util.DecodeTokenObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +47,7 @@ public class BuyGoldController {
 
      return  listProductService.getFee(req);
     }
+
+
 
 }

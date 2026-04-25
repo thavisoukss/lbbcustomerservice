@@ -1,6 +1,7 @@
 package com.lbb.customer.statement;
 
 import com.lbb.customer.statement.http.listtxn.TransactionResponse;
+import com.lbb.customer.statement.model.PortfolioRes;
 import com.lbb.customer.statement.model.StatementReq;
 import com.lbb.customer.statement.model.StatementRes;
 import com.lbb.customer.statement.model.listaccount.ListAccountData;
@@ -84,7 +85,6 @@ public class StatementController {
         return statementService.getTDAccount(decodeTokenObject ,req.getPhone() );
     }
 
-
     @GetMapping(value = "/list-current-account",
             produces = "application/json", // This tells the client we return JSON
             headers = {
@@ -100,5 +100,18 @@ public class StatementController {
 
         return statementService.getCurrentAccount(decodeTokenObject ,req.getPhone() );
     }
+
+    @GetMapping(value = "/portfolio",
+            produces = "application/json", // This tells the client we return JSON
+            headers = {
+                    "Accept-Encoding=identity" // Keep this if your logic strictly requires it
+            })
+    public PortfolioRes portfolio (Authentication authentication ){
+
+        DecodeTokenObject decodeTokenObject = new DecodeTokenObject();
+        decodeTokenObject =  decodeToken.decodeToken(authentication);
+        return  statementService.getPortfolio(decodeTokenObject.getUserId());
+    }
+
 
 }

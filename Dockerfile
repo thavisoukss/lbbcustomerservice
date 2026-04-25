@@ -43,5 +43,5 @@ EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
 
 
-#docker build --platform linux/amd64  -t 172.16.4.62:5000/customer/customer-service-1:1.0.8 .
-#docker push 172.16.4.62:5000/customer/customer-service-1:1.0.8
+#docker build --platform linux/amd64  -t 172.16.4.62:5000/customer/customer-service-1:1.0.10 .
+#docker push 172.16.4.62:5000/customer/customer-service-1:1.0.10
