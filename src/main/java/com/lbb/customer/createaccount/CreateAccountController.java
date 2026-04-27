@@ -48,8 +48,9 @@ public class CreateAccountController {
                     "Accept-Encoding=identity" // Keep this if your logic strictly requires it
             })
     public CalulateInterateRes calulateInterate  ( @RequestBody CalulateInterateReq req ,  Authentication authentication ){
-
-        return  createAccountService.calulateInterate(req);
+        DecodeTokenObject decodeTokenObject = new DecodeTokenObject();
+        decodeTokenObject = decodeToken.decodeToken(authentication);
+        return  createAccountService.calulateInterate(decodeTokenObject, req);
     }
 
     @PostMapping(value = "/inquery-open-account",

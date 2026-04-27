@@ -1,5 +1,7 @@
 package com.lbb.customer.security;
 
+import com.lbb.customer.security.exception.InvalidTokenException;
+import com.lbb.customer.security.exception.TokenExpiredException;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Service;
 
@@ -50,10 +52,11 @@ public class JwtService {
 
             return claims.getSubject();
 
-        } catch (ExpiredJwtException e){
-            throw new RuntimeException("Token expired");
-        } catch (JwtException e){
-            throw new RuntimeException("Invalid token");
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException();
+
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new InvalidTokenException();
         }
     }
 }

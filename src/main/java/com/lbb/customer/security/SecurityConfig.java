@@ -12,7 +12,7 @@ public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+    public SecurityConfig(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
         this.jwtAuthFilter = jwtAuthFilter;
     }
 

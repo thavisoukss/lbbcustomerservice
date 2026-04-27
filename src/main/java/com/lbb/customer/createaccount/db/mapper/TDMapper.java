@@ -20,6 +20,7 @@ public class TDMapper {
         data.setTd_code(entity.getTdCode());
         data.setDescription(entity.getDescription());
         data.setInterest_type(entity.getInterestType());
+        data.setMonth(entity.getTimePeriod());
         return data;
     }
 

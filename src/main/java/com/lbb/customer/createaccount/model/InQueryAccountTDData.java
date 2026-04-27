@@ -15,7 +15,7 @@ private String from_account_name;
 private String to_account_name;
 private String branch_name;
 private  int period;
-private  double rate;
+private  BigDecimal rate;
 private double per_gram;
 private String td_code;
 private String currency;
