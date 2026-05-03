@@ -1,6 +1,10 @@
 
 server:
   port: 8081
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/plain
+    min-response-size: 1024
 baseurl: /api/customers
 spring:
   datasource:
@@ -30,6 +34,9 @@ external:
 # ການຕັ້ງຄ່າ Log4j2
 logging:
   config: classpath:log4j2.xml
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
 
 management:
   tracing:
